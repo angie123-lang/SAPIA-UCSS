@@ -1,0 +1,462 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <meta
+      name="description"
+      content="Sapia, asistente universitario privado basado en fuentes oficiales de la UCSS."
+    />
+
+    <title>Sapia - Asistente universitario UCSS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+    
+  </head>
+
+  <body>
+    
+    <!-- LOGIN INSTITUCIONAL -->
+    <div id="loginScreen" class="login-screen">
+      <div class="login-container">
+        <div class="login-left">
+          <div class="login-brand">
+            <div class="brand-circle">S</div>
+
+            <h1>SAPIA</h1>
+
+            <p>Sistema de Asistencia Personal e Inteligencia Académica</p>
+
+            <div class="role-badges">
+              <span>Alumno</span>
+              <span>Docente</span>
+              <span>Administrador</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="login-right">
+          <div class="login-card">
+            <h2>Iniciar Sesión</h2>
+
+            <p class="login-subtitle">Accede con tu cuenta institucional</p>
+
+            <input
+              id="loginUser"
+              type="text"
+              placeholder="Código institucional"
+              autocomplete="username"
+            />
+
+            <input
+              id="loginPassword"
+              type="password"
+              placeholder="Contraseña"
+              autocomplete="current-password"
+            />
+
+            <button id="loginButton" type="button">Ingresar</button>
+
+            <p id="loginMessage" role="alert"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EFECTOS DECORATIVOS -->
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <!-- SISTEMA PRINCIPAL -->
+    <div class="app-shell" id="mainSystem" style="display: none">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar" aria-label="Fuentes universitarias">
+        <!-- MARCA -->
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">S</div>
+
+          <div>
+            <p class="brand-name">Sapia</p>
+
+            <p class="brand-subtitle">Asistente universitario</p>
+          </div>
+        </div>
+
+        <!-- ESTADO PRIVADO -->
+        <div class="privacy-badge">
+          <span class="privacy-dot"></span>
+
+          Sitio privado
+        </div>
+
+        <!-- PANEL ADMINISTRADOR -->
+        <div id="adminPanel" style="display: none">
+          <h3>Administración</h3>
+
+          <button id="btnNuevoAlumno" type="button">Nuevo Alumno</button>
+
+          <button id="btnNuevoDocente" type="button">Nuevo Docente</button>
+
+          <button id="btnVerUsuarios" type="button">Ver Usuarios</button>
+        </div>
+
+        <!-- FUENTES -->
+        <section class="source-summary" aria-labelledby="sourceTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Base de conocimiento</p>
+
+              <h2 id="sourceTitle">Fuentes activas</h2>
+            </div>
+
+            <span class="source-count" id="sourceCount"> 0 </span>
+          </div>
+
+          <div class="source-mini-list" id="sourceMiniList"></div>
+        </section>
+
+        <!-- ADMINISTRAR FUENTES -->
+        <button
+          class="secondary-button full-width"
+          id="manageSourcesButton"
+          type="button"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v18M3 12h18"></path>
+          </svg>
+
+          Administrar fuentes
+        </button>
+
+        <!-- AVISO -->
+        <div class="sidebar-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 3 4.5 6v5.3c0 4.7 3.2 8.1 7.5 9.7 4.3-1.6 7.5-5 7.5-9.7V6L12 3Z"
+            ></path>
+
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+
+          <p>
+            <strong>Respuesta controlada</strong><br />
+            Si la información no está en una fuente activa, Sapia lo indica.
+          </p>
+        </div>
+      </aside>
+
+      <!-- PANEL PRINCIPAL -->
+      <main class="main-panel">
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+          <button
+            class="icon-button menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Abrir fuentes"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16"></path>
+            </svg>
+          </button>
+
+          <div class="assistant-state">
+            <span class="avatar-small"> S </span>
+
+            <div>
+              <h1 id="welcomeUser">Consulta universitaria</h1>
+
+              <p>
+                <span class="online-dot"></span>
+                Lista para buscar en fuentes UCSS
+              </p>
+            </div>
+          </div>
+
+          <!-- ACCIONES -->
+          <div class="topbar-actions">
+            <button
+              class="icon-button"
+              id="clearChatButton"
+              type="button"
+              aria-label="Limpiar conversación"
+              title="Limpiar conversación"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6M14 10v6"
+                ></path>
+              </svg>
+            </button>
+
+            <button
+              id="logoutButton"
+              class="icon-button logout-button"
+              type="button"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </header>
+
+        <!-- CHAT -->
+        <section class="chat" id="chat" aria-live="polite">
+          <!-- BIENVENIDA -->
+          <div class="welcome-card" id="welcomeCard">
+            <div class="welcome-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"></path>
+
+                <path d="M6 9.2V15l6 3 6-3V9.2M21 8v6"></path>
+              </svg>
+            </div>
+
+            <p class="eyebrow">Bienvenido</p>
+
+            <h2>
+              Pregunta y recibe<br />
+              <span>la respuesta directamente.</span>
+            </h2>
+
+            <p class="welcome-copy">
+              Consulto únicamente la información indexada de fuentes oficiales
+              activas y también puedo calcular promedios o asistencia con los
+              datos que escribas.
+            </p>
+
+            <!-- PREGUNTAS RAPIDAS -->
+            <div class="prompt-grid">
+              <!-- CALENDARIO -->
+              <button
+                class="prompt-chip"
+                type="button"
+                data-prompt="¿Cuándo empiezan las clases del semestre 2026-II?"
+              >
+                <span class="chip-icon calendar-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6 3v4M18 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>
+                  <strong> Calendario 2026-II </strong>
+
+                  <small> Inicio y fin de clases </small>
+                </span>
+              </button>
+
+              <!-- CARRERAS -->
+              <button
+                class="prompt-chip"
+                type="button"
+                data-prompt="¿Qué carreras hay en la filial Rioja?"
+              >
+                <span class="chip-icon screen-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+
+                    <path d="M8 21h8M12 17v4"></path>
+                  </svg>
+                </span>
+
+                <span>
+                  <strong> Carreras por filial </strong>
+
+                  <small> Consulta la oferta académica </small>
+                </span>
+              </button>
+
+              <!-- PROMEDIO -->
+              <button
+                class="prompt-chip"
+                type="button"
+                data-prompt="Quiero calcular mi promedio"
+              >
+                <span class="chip-icon book-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z"
+                    ></path>
+                  </svg>
+                </span>
+
+                <span>
+                  <strong> Calcular promedio </strong>
+
+                  <small> EP1, EP2, EP3, EF y EC </small>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- MENSAJES -->
+          <div id="messages"></div>
+        </section>
+
+        <!-- COMPOSITOR -->
+        <footer class="composer-wrap">
+          <form class="composer" id="chatForm">
+            <textarea
+              id="questionInput"
+              rows="1"
+              maxlength="400"
+              placeholder="Pregunta sobre admisión, carreras, campus, biblioteca..."
+              aria-label="Escribe tu pregunta"
+            ></textarea>
+
+            <button
+              class="send-button"
+              id="sendButton"
+              type="submit"
+              aria-label="Enviar pregunta"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 12 14-8-4 16-3-6-7-2Z"></path>
+
+                <path d="m12 14 7-10"></path>
+              </svg>
+            </button>
+          </form>
+
+          <p class="composer-note">
+            <span></span>
+
+            Respuestas directas y limitadas a fuentes activas o datos ingresados
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <!-- OVERLAY MOBILE -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- DIALOGO DE FUENTES -->
+    <dialog class="source-dialog" id="sourceDialog">
+      <div class="dialog-shell">
+        <!-- CABECERA -->
+        <header class="dialog-header">
+          <div>
+            <p class="eyebrow">Panel de administración</p>
+
+            <h2>Fuentes universitarias</h2>
+
+            <p>
+              Activa solo los enlaces que Sapia puede utilizar al responder.
+            </p>
+          </div>
+
+          <button
+            class="icon-button"
+            id="closeDialogButton"
+            type="button"
+            aria-label="Cerrar"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </header>
+
+        <!-- CONTENIDO -->
+        <div class="dialog-content">
+          <!-- FUENTES EXISTENTES -->
+          <section class="sources-admin">
+            <div class="admin-heading">
+              <h3>Enlaces indexados</h3>
+
+              <button class="text-button" id="resetSourcesButton" type="button">
+                Restaurar originales
+              </button>
+            </div>
+
+            <div class="admin-source-list" id="adminSourceList"></div>
+          </section>
+
+          <!-- AGREGAR FUENTE -->
+          <section class="add-source-card">
+            <div class="add-source-title">
+              <span class="plus-box"> + </span>
+
+              <div>
+                <h3>Agregar una fuente</h3>
+
+                <p>
+                  Para mantener respuestas verificables, esta versión admite
+                  enlaces oficiales de la UCSS.
+                </p>
+              </div>
+            </div>
+
+            <form id="sourceForm">
+              <label>
+                Título del enlace
+
+                <input
+                  id="sourceName"
+                  type="text"
+                  maxlength="80"
+                  required
+                  placeholder="Ej. Reglamento académico"
+                />
+              </label>
+
+              <label>
+                URL oficial
+
+                <input
+                  id="sourceUrl"
+                  type="url"
+                  required
+                  placeholder="https://www.ucss.edu.pe/..."
+                />
+              </label>
+
+              <label>
+                Información que contiene
+
+                <textarea
+                  id="sourceContent"
+                  rows="3"
+                  maxlength="1200"
+                  required
+                  placeholder="Pega el texto relevante que Sapia podrá consultar."
+                ></textarea>
+              </label>
+
+              <div
+                class="form-feedback"
+                id="sourceFeedback"
+                role="status"
+              ></div>
+
+              <button class="primary-button" type="submit">
+                Guardar e indexar
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status"></div>
+
+    <!-- JAVASCRIPT -->
+    <script src="./database.js"></script>
+    <script src="./auth.js"></script>
+    <script src="./dashboard.js"></script>
+    <script src="./app.js"></script>
+    ```
+  </body>
+</html>
